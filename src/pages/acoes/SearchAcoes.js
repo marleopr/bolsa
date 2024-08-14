@@ -2,7 +2,7 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import { ToastContainer, toast } from "react-toastify";
 import 'react-toastify/dist/ReactToastify.css';
-import { BASE_URL } from "../../constants/BASE_URL";
+import { BASE_URL, TOKEN } from "../../constants/BASE_URL";
 import CardAcoes from "./CardAcoes";
 import AcoesList from "./AcoesList";
 import SquareLoader from "../../components/SquareLoader";
@@ -31,7 +31,7 @@ const SearchAcoes = () => {
     const handleAcoes = async () => {
         setLoading(true)
         try {
-            const res = await axios.get(`${BASE_URL}quote/${debouncedNome}?range=1d&interval=1d&fundamental=true&dividends=true`);
+            const res = await axios.get(`${BASE_URL}quote/${debouncedNome}?range=1d&interval=1d&fundamental=true&${TOKEN}`);
             setData(res.data.results);
             setLoading(false)
             toast.success("Ação encontrada!")
@@ -45,7 +45,7 @@ const SearchAcoes = () => {
     const handleAcoesClick = async (selectedItem) => {
         setLoading(true);
         try {
-            const res = await axios.get(`${BASE_URL}quote/${selectedItem}?range=1d&interval=1d&fundamental=true&dividends=true`);
+            const res = await axios.get(`${BASE_URL}quote/${selectedItem}?range=1d&interval=1d&fundamental=true&${TOKEN}`);
             setData(res.data.results);
             setLoading(false);
         } catch (error) {

@@ -2,7 +2,7 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import { ToastContainer, toast } from "react-toastify";
 import 'react-toastify/dist/ReactToastify.css';
-import { BASE_URL } from "../../constants/BASE_URL";
+import { BASE_URL, TOKEN } from "../../constants/BASE_URL";
 import CardCriptos from "./CardCriptos";
 import CriptoList from "./CriptoList";
 import SquareLoader from "../../components/SquareLoader";
@@ -30,26 +30,28 @@ const SearchCriptos = () => {
     const handleCrypto = async () => {
         setLoading(true)
         try {
-            const res = await axios.get(`${BASE_URL}v2/crypto?coin=${debouncedNomeCrypto}&currency=BRL`);
+            const res = await axios.get(`${BASE_URL}v2/crypto?coin=${debouncedNomeCrypto}&currency=BRL&${TOKEN}`);
             setDataCrypto(res.data.coins);
             setLoading(false)
             toast.success("Criptomoeda encontrada!")
         } catch (error) {
             console.error('Error fetching data:', error);
             setLoading(false)
-            toast.error('Criptomoeda não encontrada!');
+            toast.error('Criptomoeda não encontrada!', error.message);
+            toast.error("Você não tem acesso a este recurso, considere fazer um upgrade para um plano que suporte o acesso a moedas em https://brapi.dev/pricing");
         }
     };
 
     const handleCryptoClick = async (selectedItemCrypto) => {
         setLoading(true);
         try {
-            const res = await axios.get(`${BASE_URL}v2/crypto?coin=${selectedItemCrypto}&currency=BRL`);
+            const res = await axios.get(`${BASE_URL}v2/crypto?coin=${selectedItemCrypto}&currency=BRL&${TOKEN}`);
             setDataCrypto(res.data.coins);
             setLoading(false);
         } catch (error) {
             console.error('Error fetching data:', error);
             setLoading(false);
+            toast.error("Você não tem acesso a este recurso, considere fazer um upgrade para um plano que suporte o acesso a moedas em https://brapi.dev/pricing");
         }
     };
 
